@@ -1,18 +1,20 @@
 import { defaultEmail } from "./defaults/email.types"
-import { defaultFisrtName } from "./defaults/firstName.type"
-import { defaultLastName } from "./defaults/lastName.type"
+import { defaultOtp } from "./defaults/otp.type"
+import { defaultPassword } from "./defaults/password.type"
 
 declare namespace UserType {
-    export interface userCreateFields {
-        firstName : defaultFisrtName,
-        lastName ?: defaultLastName,
-        email : defaultEmail,
-        password: string
-    }
-
     export interface loginFields {
         email: defaultEmail,
-        password : string
+        password : defaultPassword
+    }
+
+    export interface verifyOtp {
+        email: defaultEmail,
+        otp: defaultOtp
+    }
+
+    export interface resentOtp {
+        email: defaultEmail,
     }
 }
 export default UserType

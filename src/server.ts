@@ -49,7 +49,7 @@ try {
 }
 
 
-app.listen( port,hostname, () =>{
+app.listen( port, () =>{
     console.log(`Express server is started on port ${port}`);
 })
                                                                                             

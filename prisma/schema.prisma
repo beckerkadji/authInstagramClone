@@ -11,14 +11,15 @@ datasource db {
 }
 
 model User {
-  id        String  @id @default(uuid())
-  email     String  @unique
-  firstName String
-  lastName  String?
-  password  String
-  roleId    Int
-  role      Role    @relation(fields: [roleId], references: [id], name: "user_role_ship")
-  token     Token[] @relation(name: "token_user_ship")
+  id       String  @id @default(uuid())
+  email    String  @unique
+  tel      String? @unique
+  fullName String
+  userName String  @unique
+  password String
+  roleId   Int
+  role     Role    @relation(fields: [roleId], references: [id], name: "user_role_ship")
+  token    Token[] @relation(name: "token_user_ship")
 }
 
 model Role {
@@ -36,4 +37,11 @@ model Token {
   expireIn  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Otp {
+  id        Int    @id @default(autoincrement())
+  otp       Int
+  userEmail String
+  expiredIn Int
 }

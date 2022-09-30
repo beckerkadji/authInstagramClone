@@ -2,9 +2,12 @@ import dotenv from "dotenv";
 import { Controller } from "tsoa";
 import cloudinary from "cloudinary";
 import streamifier from "streamifier"
-import { InvalidatedProjectKind } from "typescript";
+import nodemailer from "nodemailer"
+import Email from "email-templates"
+import path from "path"
+import AWS from "aws-sdk"
 
-
+const root = path.join(__dirname, '../../src/', 'emails')
 dotenv.config();
 
 cloudinary.v2.config({
@@ -12,6 +15,44 @@ cloudinary.v2.config({
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret : process.env.CLOUNDINARY_API_SECRET
 })
+
+//nodemailer Configuration for mailtrap
+
+const transport = nodemailer.createTransport({
+    port: 2525,
+    host: "smtp.mailtrap.io",
+    auth: {
+      user: process.env.NODEMAILER_USER,
+      pass: process.env.NODEMAILER_PASSWORD
+    }
+  });
+
+//nodemailer Configuration for aws-sdk
+
+// AWS.config.update({
+//     accessKeyId: process.env.AWSACCESSKEYID,
+//     secretAccessKey: process.env.AWSSECRETKEY,
+//     region: process.env.REGION
+// })
+// const transport = nodemailer.createTransport({
+//     SES: new AWS.SES({
+//         apiVersion: '2010-12-01'
+//     })
+// });
+
+
+//nodemailer Configuration for aws SMTP
+
+// const transport = nodemailer.createTransport({
+//     port: 465,
+//     host:process.env.SMTPHOST,
+//     secure:true,
+//     auth: {
+//         user: process.env.SMTPUSERNAME,
+//         pass: process.env.SMTPPASSWORD
+//     },
+//     debug: true
+// })
 
 
 export interface IResponse {
@@ -24,6 +65,16 @@ export interface IResponse {
 
 export class My_Controller extends Controller {
 
+
+    public generateOTP() : number{
+       const otpTable = ['0','1','2','3','4','5','6','7','8','9']
+       const random = [];
+       for(let i = 0; i<6; i++){
+        random.push(Math.floor(Math.random()* otpTable.length))
+       }
+       const otp = random.join('')
+       return parseInt(otp)
+    }
 
     public validate (schema: any, fields:any) : boolean | object {
         
@@ -62,6 +113,41 @@ export class My_Controller extends Controller {
         }
 
     }  
+
+    public async sendMail(to: string | string[], subject: string, option?: number | string | string[] | number[]) : Promise<any>{
+        let response : any = ''
+        const email =  new Email({
+            views: {root},
+            message: {
+                from: 'kadjibecker@gmail.com'
+            },
+            send: true,
+            // juiceResources: {
+            //     webResources:{
+            //         relativeTo: root
+            //     }
+            // },
+            transport
+        })
+         await email.send({
+            template : 'otp',
+            message:{
+                to
+            },
+            locals:{
+                otp: option
+            }
+        }).then((res) =>{
+            response = res
+        }).catch((error)=>{
+            response = {
+                status: 'error',
+                res : error
+            }
+        })
+
+        return response
+    }
 
     private async cloudinaryImageUploadMethod(file : any) : Promise<any> {
 
