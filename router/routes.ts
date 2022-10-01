@@ -4,6 +4,8 @@
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse, fetchMiddlewares } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserController } from './../app/controllers/login.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { RegisterController } from './../app/controllers/register.controller';
 import { expressAuthentication } from './../app/middlewares/auth';
 // @ts-ignore - no great way to install types from subpackage
 const promiseAny = require('promise.any');
@@ -33,7 +35,7 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"string","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "UserType.loginFields": {
+    "LoginType.loginFields": {
         "dataType": "refObject",
         "properties": {
             "email": {"ref":"defaultEmail","required":true},
@@ -47,7 +49,7 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"double","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "UserType.verifyOtp": {
+    "LoginType.verifyOtp": {
         "dataType": "refObject",
         "properties": {
             "email": {"ref":"defaultEmail","required":true},
@@ -56,10 +58,37 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "UserType.resentOtp": {
+    "LoginType.resentOtp": {
         "dataType": "refObject",
         "properties": {
             "email": {"ref":"defaultEmail","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "defaultUserName": {
+        "dataType": "refAlias",
+        "type": {"dataType":"string","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "defaultFullName": {
+        "dataType": "refAlias",
+        "type": {"dataType":"string","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "defaultTel": {
+        "dataType": "refAlias",
+        "type": {"dataType":"string","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "RegisterType.registerFields": {
+        "dataType": "refObject",
+        "properties": {
+            "userName": {"ref":"defaultUserName","required":true},
+            "fullName": {"ref":"defaultFullName","required":true},
+            "email": {"ref":"defaultEmail","required":true},
+            "tel": {"ref":"defaultTel"},
+            "password": {"ref":"defaultPassword","required":true},
         },
         "additionalProperties": false,
     },
@@ -80,7 +109,7 @@ export function RegisterRoutes(app: express.Router) {
 
             function UserController_login(request: any, response: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"UserType.loginFields"},
+                    body: {"in":"body","name":"body","required":true,"ref":"LoginType.loginFields"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -105,7 +134,7 @@ export function RegisterRoutes(app: express.Router) {
 
             function UserController_verifyOtp(request: any, response: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"UserType.verifyOtp"},
+                    body: {"in":"body","name":"body","required":true,"ref":"LoginType.verifyOtp"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -130,7 +159,7 @@ export function RegisterRoutes(app: express.Router) {
 
             function UserController_resendotp(request: any, response: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"UserType.resentOtp"},
+                    body: {"in":"body","name":"body","required":true,"ref":"LoginType.resentOtp"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -140,6 +169,81 @@ export function RegisterRoutes(app: express.Router) {
                 validatedArgs = getValidatedArgs(args, request, response);
 
                 const controller = new UserController();
+
+
+              const promise = controller.resendotp.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/register',
+            ...(fetchMiddlewares<RequestHandler>(RegisterController)),
+            ...(fetchMiddlewares<RequestHandler>(RegisterController.prototype.register)),
+
+            function RegisterController_register(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"RegisterType.registerFields"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new RegisterController();
+
+
+              const promise = controller.register.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/register/validateEmail',
+            ...(fetchMiddlewares<RequestHandler>(RegisterController)),
+            ...(fetchMiddlewares<RequestHandler>(RegisterController.prototype.verifyEmail)),
+
+            function RegisterController_verifyEmail(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"LoginType.verifyOtp"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new RegisterController();
+
+
+              const promise = controller.verifyEmail.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/register/resentotp',
+            ...(fetchMiddlewares<RequestHandler>(RegisterController)),
+            ...(fetchMiddlewares<RequestHandler>(RegisterController.prototype.resendotp)),
+
+            function RegisterController_resendotp(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"LoginType.resentOtp"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new RegisterController();
 
 
               const promise = controller.resendotp.apply(controller, validatedArgs as any);

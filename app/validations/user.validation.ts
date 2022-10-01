@@ -1,9 +1,9 @@
 import Joi from "joi";
 import  {schema}  from "../utils/schema";
 
-export const userCreateSchema = Joi.object({
-    firstName : schema.firstName,
-    lastName : schema.lastName,
+export const registerSchema = Joi.object({
+    userName : schema.userName,
+    fullName : schema.fullName,
     email : schema.email,
     password : schema.password,
 })

@@ -42,7 +42,8 @@ async function main() {
           tel : "237696809088",
           email: "kadjibecker@gmail.com",
           roleId: USER_ROLE.ROOT,
-          password : bcrypt.hashSync('password',10)
+          password : bcrypt.hashSync('password',10),
+          emailVerified: true
       }
   })
     console.log(user)
