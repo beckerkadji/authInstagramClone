@@ -1,6 +1,6 @@
 import {Body, Get, Post, Route, Tags,} from "tsoa";
 import {  IResponse, My_Controller } from "./controller";
-import UserType from "../types/userType";
+import LoginType from "../types/loginType";
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import {UserModel} from "../models/user";
@@ -17,7 +17,7 @@ export class UserController extends My_Controller {
 
     @Post('')
     public async login(
-        @Body() body : UserType.loginFields
+        @Body() body : LoginType.loginFields
     ) : Promise<IResponse> {
         try {
             //found user
@@ -57,7 +57,7 @@ export class UserController extends My_Controller {
 
     @Post("verifyOtp")
     public async verifyOtp(
-        @Body() body: UserType.verifyOtp
+        @Body() body: LoginType.verifyOtp
     ) : Promise<IResponse> {
 
         let foundOtp = await OtpModel.findFirst({
@@ -98,7 +98,7 @@ export class UserController extends My_Controller {
 
     @Post('resentotp')
     public async resendotp(
-        @Body() body : UserType.resentOtp
+        @Body() body : LoginType.resentOtp
     ): Promise<IResponse>{
         let otp = this.generateOTP()
         

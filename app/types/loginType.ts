@@ -2,7 +2,7 @@ import { defaultEmail } from "./defaults/email.types"
 import { defaultOtp } from "./defaults/otp.type"
 import { defaultPassword } from "./defaults/password.type"
 
-declare namespace UserType {
+declare namespace LoginType {
     export interface loginFields {
         email: defaultEmail,
         password : defaultPassword
@@ -17,5 +17,5 @@ declare namespace UserType {
         email: defaultEmail,
     }
 }
-export default UserType
+export default LoginType
 
