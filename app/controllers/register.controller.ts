@@ -42,7 +42,7 @@ export class RegisterController extends My_Controller{
                 }
             })
             //send otp for validate this email
-            let res = await this.sendMail(body.email, "OTP for email validation", createOtp.otp)
+            let res = await this.sendMail(body.email, "OTP for email validation",'otp', createOtp.otp)
             if(res.status == 'error')
                 return response.liteResponse(code.FAILURE, "Error occured, Try again !", res)
 
@@ -71,7 +71,7 @@ export class RegisterController extends My_Controller{
             const foundUser: any = await UserModel.findFirst({where: {email: body.email}})
             if(!foundUser)
             return response.liteResponse(code.NOT_FOUND, 'User not found, Invalid email')
-            
+
             let foundOtp = await OtpModel.findFirst({
                 where:{
                     otp: body.otp,
@@ -127,7 +127,7 @@ export class RegisterController extends My_Controller{
                 }
             })
             //send mail
-            let res = await this.sendMail(body.email, "OTP", createOtp.otp)
+            let res = await this.sendMail(body.email, "OTP",'otp', createOtp.otp)
             if(res.status == 'error')
                 return response.liteResponse(code.FAILURE, "Error occured, Try again !", res)
 

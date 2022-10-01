@@ -3,6 +3,8 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse, fetchMiddlewares } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ForgotPasswordController } from './../app/controllers/forgotPassword.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserController } from './../app/controllers/login.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { RegisterController } from './../app/controllers/register.controller';
@@ -30,6 +32,14 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"string","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "LoginType.resentOtp": {
+        "dataType": "refObject",
+        "properties": {
+            "email": {"ref":"defaultEmail","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "defaultPassword": {
         "dataType": "refAlias",
         "type": {"dataType":"string","validators":{}},
@@ -54,14 +64,6 @@ const models: TsoaRoute.Models = {
         "properties": {
             "email": {"ref":"defaultEmail","required":true},
             "otp": {"ref":"defaultOtp","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "LoginType.resentOtp": {
-        "dataType": "refObject",
-        "properties": {
-            "email": {"ref":"defaultEmail","required":true},
         },
         "additionalProperties": false,
     },
@@ -103,6 +105,31 @@ export function RegisterRoutes(app: express.Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
+        app.post('/forgotPassword',
+            ...(fetchMiddlewares<RequestHandler>(ForgotPasswordController)),
+            ...(fetchMiddlewares<RequestHandler>(ForgotPasswordController.prototype.forgotPassword)),
+
+            function ForgotPasswordController_forgotPassword(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"LoginType.resentOtp"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new ForgotPasswordController();
+
+
+              const promise = controller.forgotPassword.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/login',
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.login)),

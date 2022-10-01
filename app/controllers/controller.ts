@@ -18,27 +18,27 @@ cloudinary.v2.config({
 
 //nodemailer Configuration for mailtrap
 
-const transport = nodemailer.createTransport({
-    port: 2525,
-    host: "smtp.mailtrap.io",
-    auth: {
-      user: process.env.NODEMAILER_USER,
-      pass: process.env.NODEMAILER_PASSWORD
-    }
-  });
+// const transport = nodemailer.createTransport({
+//     port: 2525,
+//     host: "smtp.mailtrap.io",
+//     auth: {
+//       user: process.env.NODEMAILER_USER,
+//       pass: process.env.NODEMAILER_PASSWORD
+//     }
+//   });
 
 //nodemailer Configuration for aws-sdk
 
-// AWS.config.update({
-//     accessKeyId: process.env.AWSACCESSKEYID,
-//     secretAccessKey: process.env.AWSSECRETKEY,
-//     region: process.env.REGION
-// })
-// const transport = nodemailer.createTransport({
-//     SES: new AWS.SES({
-//         apiVersion: '2010-12-01'
-//     })
-// });
+AWS.config.update({
+    accessKeyId: process.env.AWSACCESSKEYID,
+    secretAccessKey: process.env.AWSSECRETKEY,
+    region: process.env.REGION
+})
+const transport = nodemailer.createTransport({
+    SES: new AWS.SES({
+        apiVersion: '2010-12-01'
+    })
+});
 
 
 //nodemailer Configuration for aws SMTP
@@ -75,6 +75,18 @@ export class My_Controller extends Controller {
        const otp = random.join('')
        return parseInt(otp)
     }
+
+    public generateString() : string{
+        const otpTable = ['a','X','2','Z','897','5Hg','0','@','b','9']
+        for(let i = 0; i<10; i++){
+            let j= Math.floor(Math.random()* otpTable.length)
+            let temp = otpTable[i]
+            otpTable[i] = otpTable[j]
+            otpTable[j] = temp
+        }
+        const value = otpTable.join('')
+        return value
+     }
 
     public validate (schema: any, fields:any) : boolean | object {
         
@@ -114,7 +126,7 @@ export class My_Controller extends Controller {
 
     }  
 
-    public async sendMail(to: string | string[], subject: string, option?: number | string | string[] | number[]) : Promise<any>{
+    public async sendMail(to: string | string[], subject: string, template: string, option?: number | string | string[] | number[]) : Promise<any>{
         let response : any = ''
         const email =  new Email({
             views: {root},
@@ -130,12 +142,14 @@ export class My_Controller extends Controller {
             transport
         })
          await email.send({
-            template : 'otp',
+            template : template,
             message:{
                 to
             },
             locals:{
-                otp: option
+                otp: option,
+                newpassword: option,
+                subject
             }
         }).then((res) =>{
             response = res

@@ -46,3 +46,9 @@ model Otp {
   userEmail String
   expiredIn Int
 }
+
+model Forgotpassword {
+  id          Int    @id @default(autoincrement())
+  userEmail   String
+  newPassword String
+}

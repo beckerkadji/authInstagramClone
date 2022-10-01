@@ -24,7 +24,12 @@ export class UserController extends My_Controller {
             const foundUser = await UserModel.findFirst({where: {email: body.email}})
             if(!foundUser)
                 return response.liteResponse(code.NOT_FOUND, 'User not found, Invalid email or password !')
+            
+            //check if this user is verified
+            if(foundUser.emailVerified == false)
+                return response.liteResponse(code.FAILURE, "User not verify !")
 
+                
             //Compare password
             const compare = bcrypt.compareSync(body.password, foundUser.password)
             if(!compare){
@@ -42,7 +47,7 @@ export class UserController extends My_Controller {
                 })
 
                 //send mail
-                let res = await this.sendMail(foundUser.email, "OTP", createOtp.otp)
+                let res = await this.sendMail(foundUser.email, "OTP verification code ",'otp', createOtp.otp)
                 if(res.status == 'error')
                     return response.liteResponse(code.FAILURE, "Error occured, Try again !", res)
 
@@ -129,7 +134,7 @@ export class UserController extends My_Controller {
                 }
             })
             //send mail
-            let res = await this.sendMail(body.email, "OTP", createOtp.otp)
+            let res = await this.sendMail(body.email, "OTP verification code",'otp', createOtp.otp)
             if(res.status == 'error')
                 return response.liteResponse(code.FAILURE, "Error occured, Try again !", res)
 
