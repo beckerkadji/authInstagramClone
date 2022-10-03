@@ -144,24 +144,4 @@ export class UserController extends My_Controller {
         }
         
     }
-   
-    // @Get('logout')
-    // @Security("Jwt")
-    // public async logout(
-    //     @Request() req : any
-    // ): Promise<IResponse> {
-    //     try {
-    //         const token = await TokenModel.findFirst({where: {jwt : req.headers['authorization']}})
-    //         if(!token)
-    //             return response.liteResponse(code.FAILURE, "Token not found",null)
-
-    //         let expirate  = Math.round((new Date().getTime() / 1000) / 2)
-    //         await TokenModel.update({where : {id: token.id}, data: {
-    //                 expireIn: expirate,
-    //             }})
-    //         return response.liteResponse(code.SUCCESS, "Logout with success !", null)
-    //     }catch (e){
-    //         return response.catchHandler(e)
-    //     }
-    // }
 }
