@@ -51,7 +51,7 @@ export class UserController extends My_Controller {
                 if(res.status == 'error')
                     return response.liteResponse(code.FAILURE, "Error occured, Try again !", res)
 
-                return response.liteResponse(code.SUCCESS, "Verify OTP")
+                return response.liteResponse(code.SUCCESS, "Verify OTP", {email: createOtp.userEmail})
             }
 
         }
