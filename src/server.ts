@@ -34,7 +34,9 @@ app.use(cors())
 
 
 //Router configuration
-RegisterRoutes(app)
+const apiRoutes = express();
+RegisterRoutes(apiRoutes)
+app.use('/api', apiRoutes)
 
 //Response configuration
 app.use(Response.errorHandlerValidation)
