@@ -34,7 +34,7 @@ app.use(cors())
 
 
 //Router configuration
-const apiRoutes = express();
+const apiRoutes = express(); 
 RegisterRoutes(apiRoutes)
 app.use('/api', apiRoutes)
 
