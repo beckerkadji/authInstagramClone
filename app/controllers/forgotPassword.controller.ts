@@ -18,8 +18,7 @@ export class ForgotPasswordController extends My_Controller{
     public async forgotPassword(
         @Body() body: LoginType.resentOtp
     ): Promise<IResponse> {
-        // try {
-            
+         try {
             //Check user account
             const foundUser = await UserModel.findFirst({where:{email : body.email}})
             if(!foundUser)
@@ -27,15 +26,15 @@ export class ForgotPasswordController extends My_Controller{
             
             //generate new Password for this user
             let newPassword = this.generateString()
-            console.log("new password :", newPassword)
-            const createpassword = await ForgotPasswordModel.create({
+            console.log(body.email, newPassword)
+            const createPassword  = await ForgotPasswordModel.create({
                 data: {
-                    newPassword,
-                    userEmail : body.email
+                    userEmail : body.email,
+                    newPassword
                 }
             })
             //send new password email
-            let res = await this.sendMail(body.email, "New password", "forgot", createpassword.newPassword)
+            let res = await this.sendMail(body.email, "New password", "forgot", createPassword.newPassword)
             if(res.status == 'error')
                 return response.liteResponse(code.FAILURE, "Error occured, Try again !", res)
 
@@ -50,8 +49,8 @@ export class ForgotPasswordController extends My_Controller{
                 }
             })
             return response.liteResponse(code.SUCCESS, "User Password is updated with Success !", updatePassword)
-        // }catch (e){
-        //     return response.catchHandler(e)
-        // }
+        }catch (e){
+            return response.catchHandler(e)
+        }
     }
 }

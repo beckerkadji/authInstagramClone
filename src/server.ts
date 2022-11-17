@@ -38,6 +38,8 @@ const apiRoutes = express();
 RegisterRoutes(apiRoutes)
 app.use('/api', apiRoutes)
 
+RegisterRoutes(app)
+
 //Response configuration
 app.use(Response.errorHandlerValidation)
 //app.use(Response.notFoundHandler)
