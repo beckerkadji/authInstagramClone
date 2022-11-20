@@ -12,12 +12,12 @@ const prisma = new PrismaClient()
 
 const response = new ResponseHandler()
 
-@Route('Password')
+@Route('password')
 @Tags('Password Controller')
 
 export class PasswordController extends My_Controller{
 
-    @Post('/forgotPassword')
+    @Post('/forgotpassword')
     public async forgotPassword(
         @Body() body: LoginType.resentOtp
     ): Promise<IResponse> {
