@@ -5,20 +5,23 @@ import { ResponseHandler } from "../../src/config/responseHandler";
 import { UserModel } from "../models/user";
 import { IResponse, My_Controller } from "./controller";
 import LoginType from "../types/loginType";
-import { ForgotPasswordModel } from "../models/forgotPassword";
+import { PasswordModel } from "../models/password";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient()
 
 const response = new ResponseHandler()
 
-@Route('forgotPassword')
-@Tags('Forgot Password Controller')
+@Route('Password')
+@Tags('Password Controller')
 
-export class ForgotPasswordController extends My_Controller{
+export class PasswordController extends My_Controller{
 
-    @Post('')
+    @Post('/forgotPassword')
     public async forgotPassword(
         @Body() body: LoginType.resentOtp
     ): Promise<IResponse> {
-         try {
+        //  try {
             //Check user account
             const foundUser = await UserModel.findFirst({where:{email : body.email}})
             if(!foundUser)
@@ -27,7 +30,7 @@ export class ForgotPasswordController extends My_Controller{
             //generate new Password for this user
             let newPassword = this.generateString()
             console.log(body.email, newPassword)
-            const createPassword  = await ForgotPasswordModel.create({
+            const createPassword  = await PasswordModel.create({
                 data: {
                     userEmail : body.email,
                     newPassword
@@ -39,7 +42,6 @@ export class ForgotPasswordController extends My_Controller{
                 return response.liteResponse(code.FAILURE, "Error occured, Try again !", res)
 
             //update user password
-            console.log("Create user...")
             const updatePassword = await UserModel.update({
                 where:{
                     email: body.email
@@ -49,8 +51,8 @@ export class ForgotPasswordController extends My_Controller{
                 }
             })
             return response.liteResponse(code.SUCCESS, "User Password is updated with Success !", updatePassword)
-        }catch (e){
-            return response.catchHandler(e)
-        }
+        // }catch (e){
+        //     return response.catchHandler(e)
+        // }
     }
 }

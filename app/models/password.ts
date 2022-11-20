@@ -3,4 +3,4 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 
-export const ForgotPasswordModel = prisma.forgotPassword
+export const PasswordModel = prisma.password
