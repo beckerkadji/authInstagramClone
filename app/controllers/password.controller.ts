@@ -29,7 +29,6 @@ export class PasswordController extends My_Controller{
             
             //generate new Password for this user
             let newPassword = this.generateString()
-            console.log(body.email, newPassword)
             const createPassword  = await PasswordModel.create({
                 data: {
                     userEmail : body.email,
